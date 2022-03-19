@@ -16,6 +16,9 @@ class PartiesService {
     }
 
     async createParty(body) {
+        if (body == undefined || null) {
+            throw new BadRequest("What the heck are you sending me")
+        }
         const party = await dbContext.Parties.create(body)
         await party.populate('creator')
         return party

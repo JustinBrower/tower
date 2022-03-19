@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext"
+import { BadRequest, Forbidden } from "../utils/Errors"
 
 
 
@@ -14,6 +15,13 @@ class CommentsService {
     async getCommentsByParty(id) {
         const comments = await dbContext.Comments.find({ eventId: id }).populate('creator')
         return comments
+    }
+
+    async deleteComment(id, userId) {
+        const comment = await dbContext.Comments.findById(id, userId)
+        if (comment.creatorId != userId) {
+            throw new Forbidden("You cannot delete this")
+        }
     }
 }
 

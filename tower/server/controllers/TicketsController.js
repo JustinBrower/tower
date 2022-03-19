@@ -29,7 +29,7 @@ export class TicketsController extends BaseController {
 
     async deleteTicket(req, res, next) {
         try {
-            const doomedTicket = await ticketsService.deleteTicket(req.params.id)
+            const doomedTicket = await ticketsService.deleteTicket(req.params.id, req.userInfo.id)
             res.send(doomedTicket)
         } catch (error) {
             next(error)
