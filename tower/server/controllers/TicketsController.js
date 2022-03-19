@@ -1,5 +1,6 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
 import { dbContext } from "../db/DbContext";
+import { partiesService } from "../services/PartiesService";
 import { ticketsService } from "../services/TIcketsService";
 import BaseController from "../utils/BaseController";
 
@@ -17,6 +18,7 @@ export class TicketsController extends BaseController {
 
     async createTicket(req, res, next) {
         try {
+            // TODO MAKE THIS SEND A PUT REQUEST TO PARTY TO EDIT CAPACITY
             req.body.accountId = req.userInfo.id
             const ticket = await ticketsService.createTicket(req.body)
             res.send(ticket)

@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext"
+import { partiesService } from "./PartiesService"
 
 
 
@@ -16,6 +17,11 @@ class TicketsService {
 
     async getMyTickets(id) {
         const tickets = await dbContext.Tickets.find({ accountId: id })
+        return tickets
+    }
+
+    async getTicketsByParty(id) {
+        const tickets = await dbContext.Tickets.find({ eventId: id })
         return tickets
     }
 }

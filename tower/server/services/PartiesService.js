@@ -17,7 +17,7 @@ class PartiesService {
 
     async createParty(body) {
         const party = await dbContext.Parties.create(body)
-        // await party.populate('creator')
+        await party.populate('creator')
         return party
     }
 

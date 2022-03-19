@@ -1,5 +1,7 @@
 import { Auth0Provider } from "@bcwdev/auth0provider";
+import { commentsService } from "../services/CommentsService";
 import { partiesService } from "../services/PartiesService";
+import { ticketsService } from "../services/TIcketsService";
 import BaseController from "../utils/BaseController";
 import { BadRequest } from "../utils/Errors";
 
@@ -11,10 +13,13 @@ export class PartiesController extends BaseController {
         this.router
             .get('', this.getAllParties)
             .get('/:id', this.getPartyById)
+            .get('/:id/comments', this.getCommentsByParty)
             .use(Auth0Provider.getAuthorizedUserInfo)
             .post('', this.createParty)
             .put('/:id', this.editParty)
             .delete('/:id', this.cancelParty)
+            .get('/:id/tickets', this.getTicketsByParty)
+
     }
 
 
@@ -63,6 +68,25 @@ export class PartiesController extends BaseController {
         } catch (error) {
             next(error)
         }
+    }
+
+    async getTicketsByParty(req, res, next) {
+        try {
+            const tickets = await ticketsService.getTicketsByParty(req.params.id)
+            res.send(tickets)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    async getCommentsByParty(req, res, next) {
+        try {
+            const comments = await commentsService.getCommentsByParty(req.params.id)
+            res.send(comments)
+        } catch (error) {
+            next(error)
+        }
+
     }
 
 }
