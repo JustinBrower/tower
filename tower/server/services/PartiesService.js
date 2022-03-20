@@ -16,9 +16,9 @@ class PartiesService {
     }
 
     async createParty(body) {
-        if (body.startDate < Date()) {
-            throw new BadRequest("Bro you can't plan an event in the past")
-        }
+        // if (body.startDate < Date()) {
+        //     throw new BadRequest("Bro you can't plan an event in the past")
+        // }
 
         if (body == undefined || null) {
             throw new BadRequest("What the heck are you sending me")

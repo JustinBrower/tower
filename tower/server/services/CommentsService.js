@@ -18,10 +18,11 @@ class CommentsService {
     }
 
     async deleteComment(id, userId) {
-        const comment = await dbContext.Comments.findById(id, userId)
+        const comment = await dbContext.Comments.findById(id)
         if (comment.creatorId != userId) {
             throw new Forbidden("You cannot delete this")
         }
+        comment.delete()
     }
 }
 
