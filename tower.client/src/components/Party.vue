@@ -3,13 +3,32 @@
     <img
       class="card-img-top hoverable"
       :src="party.coverImg"
-      alt="Card image cap"
+      alt="cover_image"
       @click="goTo('Party')"
     />
-    <div class="card-body">
+    <div class="card-body" v-if="!party.isCanceled">
       <div class="card-text">
         <h4>{{ party.name }}</h4>
-        {{ party.description }}
+        <p>{{ party.description }}</p>
+        <div>
+          <p v-if="party.capacity > 0">Tickets Left: {{ party.capacity }}</p>
+          <p v-else style="color: red">MAX CAPACITY</p>
+          <p>Date: {{ new Date(party.startDate).toLocaleString() }}</p>
+          <p>Location: {{ party.location }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-danger" v-else>
+      <div class="card-text">
+        <h4>{{ party.name }}</h4>
+        <p>{{ party.description }}</p>
+        <div>
+          <p v-if="party.capacity > 0">Tickets Left: {{ party.capacity }}</p>
+          <p v-else style="color: red">MAX CAPACITY}</p>
+          <p>Date: {{ new Date(party.startDate).toLocaleString() }}</p>
+          <p>Location: {{ party.location }}</p>
+          <p>CANCELED</p>
+        </div>
       </div>
     </div>
   </div>

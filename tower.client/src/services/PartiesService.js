@@ -16,6 +16,12 @@ class PartiesService {
 
     }
 
+    async search(query) {
+        logger.log("query is...", query)
+        const res = await api.get('api/events' + '?query=' + query)
+        AppState.parties = res.data
+    }
+
 }
 
 export const partiesService = new PartiesService()

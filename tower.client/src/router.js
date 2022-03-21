@@ -12,7 +12,7 @@ const routes = [
     component: loadPage('HomePage')
   },
   {
-    path: '/party',
+    path: '/party/:id',
     name: 'Party',
     component: loadPage('PartyPage'),
     beforeEnter: authGuard

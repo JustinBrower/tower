@@ -17,31 +17,57 @@
       <span class="navbar-toggler-icon" />
     </button>
     <div class="collapse navbar-collapse" id="navbarText">
-      <div class="navbar-nav me-auto"></div>
+      <div class="navbar-nav me-auto">
+        <button
+          data-bs-toggle="modal"
+          data-bs-target="#filtersModal"
+          class="btn btn-info hoverable"
+        >
+          Filters
+        </button>
+        <div class="ms-3" v-if="user.isAuthenticated">
+          <button class="btn btn-success">Create Event</button>
+        </div>
+      </div>
       <!-- LOGIN COMPONENT HERE -->
       <Login />
     </div>
   </nav>
+  <Modal id="filtersModal">
+    <template #title>Add Filters...</template>
+
+    <template #body>
+      <form @submit="createTask" class="row">
+        <div>
+          <label class="p-2" for="concert">Concert</label>
+          <input type="checkbox" />
+          <label class="p-2" for="convention">Convention</label>
+          <input type="checkbox" />
+          <label class="p-2" for="sport">Sport</label>
+          <input type="checkbox" />
+          <label class="p-2" for="digital">Digital</label>
+          <input type="checkbox" />
+        </div>
+        <!-- TODO MAKE THIS CLOSE MODAL -->
+        <div class="d-flex justify-content-end align-items-center">
+          <button type="button" class="btn btn-success">Save Changes</button>
+        </div>
+      </form>
+    </template>
+  </Modal>
 </template>
 
 <script>
+import { computed } from '@vue/reactivity';
+import { AppState } from '../AppState';
 export default {
   setup() {
-    return {};
+    return {
+      user: computed(() => AppState.user),
+    };
   },
 };
 </script>
 
 <style scoped>
-a:hover {
-  text-decoration: none;
-}
-.nav-link {
-  text-transform: uppercase;
-}
-.navbar-nav .router-link-exact-active {
-  border-bottom: 2px solid var(--bs-success);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
 </style>
