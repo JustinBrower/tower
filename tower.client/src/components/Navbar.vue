@@ -26,7 +26,13 @@
           Filters
         </button>
         <div class="ms-3" v-if="user.isAuthenticated">
-          <button class="btn btn-success">Create Event</button>
+          <button
+            data-bs-toggle="modal"
+            data-bs-target="#createModal"
+            class="btn btn-success"
+          >
+            Create Event
+          </button>
         </div>
       </div>
       <!-- LOGIN COMPONENT HERE -->
@@ -37,7 +43,7 @@
     <template #title>Add Filters...</template>
 
     <template #body>
-      <form @submit="createTask" class="row">
+      <form @submit="filter" class="row">
         <div>
           <label class="p-2" for="concert">Concert</label>
           <input type="checkbox" />
@@ -55,14 +61,69 @@
       </form>
     </template>
   </Modal>
+  <Modal id="createModal">
+    <template #title>Create Event</template>
+
+    <template #body>
+      <form @submit="createParty" class="row">
+        <div class="container-fluid">
+          <div class="row">
+            <label class="p-2" for="name">Name:</label>
+            <input v-model="editable.name" required type="text" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="description">Description:</label>
+            <input v-model="editable.description" required type="text" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="location">Location:</label>
+            <input v-model="editable.location" required type="text" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="capacity">Capacity:</label>
+            <input v-model="editable.capacity" required min="1" type="number" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="startDate">Start Date:</label>
+            <input v-model="editable.startDate" required type="date" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="coverImg">Image:</label>
+            <input v-model="editable.coverImg" required type="text" />
+          </div>
+          <div class="row">
+            <label class="p-2" for="type">Type:</label>
+            <input required type="dropdown" />
+          </div>
+        </div>
+        <!-- TODO MAKE THIS CLOSE MODAL -->
+        <div class="mt-2 d-flex justify-content-end align-items-center">
+          <button type="button" class="btn btn-success">Create Event</button>
+        </div>
+      </form>
+    </template>
+  </Modal>
 </template>
 
 <script>
-import { computed } from '@vue/reactivity';
+import { computed, ref } from '@vue/reactivity';
 import { AppState } from '../AppState';
+import { logger } from '../utils/Logger';
+import Pop from '../utils/Pop';
+import { partiesService } from '../services/PartiesService';
 export default {
   setup() {
+    const editable = ref({})
     return {
+      editable,
+      async createParty() {
+        try {
+          await partiesService.createParty(editable.value)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
       user: computed(() => AppState.user),
     };
   },

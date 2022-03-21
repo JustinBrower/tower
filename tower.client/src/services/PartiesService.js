@@ -12,8 +12,11 @@ class PartiesService {
         logger.log("got all events...", res.data)
         AppState.parties = res.data
     }
-    async createParty() {
-
+    async createParty(party) {
+        logger.log("party is...", party)
+        const res = api.post('api/events/', party)
+        logger.log("res.data is...", res.data)
+        AppState.parties = [...AppState.parties, res.data]
     }
 
     async search(query) {
