@@ -26,6 +26,10 @@ class PartiesService {
         AppState.parties = AppState.parties.filter(p => p.id !== id)
     }
 
+    async editParty(body, id) {
+        const res = await api.put('api/events/' + id, body)
+    }
+
     async setActive(id) {
         const res = await api.get('api/events/' + id)
         logger.log("active party is...", res.data)
