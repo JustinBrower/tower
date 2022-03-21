@@ -65,7 +65,7 @@
     <template #title>Create Event</template>
 
     <template #body>
-      <form @submit="createParty" class="row">
+      <form @submit.prevent="createParty" class="row">
         <div class="container-fluid">
           <div class="row">
             <label class="p-2" for="name">Name:</label>
@@ -93,12 +93,14 @@
           </div>
           <div class="row">
             <label class="p-2" for="type">Type:</label>
-            <input required type="dropdown" />
+            <input v-model="editable.type" required type="text" />
           </div>
         </div>
         <!-- TODO MAKE THIS CLOSE MODAL -->
         <div class="mt-2 d-flex justify-content-end align-items-center">
-          <button type="button" class="btn btn-success">Create Event</button>
+          <button @click="createParty" type="button" class="btn btn-success">
+            Create Event
+          </button>
         </div>
       </form>
     </template>
@@ -111,13 +113,23 @@ import { AppState } from '../AppState';
 import { logger } from '../utils/Logger';
 import Pop from '../utils/Pop';
 import { partiesService } from '../services/PartiesService';
+import { useRoute } from 'vue-router';
+import { router } from '../router';
 export default {
   setup() {
+    const route = useRoute();
     const editable = ref({})
     return {
+      goTo(page) {
+        router.push({
+          name: page,
+          params: { id: props.project.id },
+        });
+      },
       editable,
       async createParty() {
         try {
+          logger.log("attempting to create event...")
           await partiesService.createParty(editable.value)
         } catch (error) {
           logger.error(error)

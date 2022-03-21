@@ -14,7 +14,8 @@ class PartiesService {
     }
     async createParty(party) {
         logger.log("party is...", party)
-        const res = api.post('api/events/', party)
+        const res = await api.post('api/events', party)
+        logger.log("res is...", res)
         logger.log("res.data is...", res.data)
         AppState.parties = [...AppState.parties, res.data]
     }
