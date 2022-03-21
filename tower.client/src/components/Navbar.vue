@@ -91,9 +91,16 @@
             <label class="p-2" for="coverImg">Image:</label>
             <input v-model="editable.coverImg" required type="text" />
           </div>
+
           <div class="row">
             <label class="p-2" for="type">Type:</label>
-            <input v-model="editable.type" required type="text" />
+            <select v-model="editable.type">
+              <option></option>
+              <option>concert</option>
+              <option>convention</option>
+              <option>digital</option>
+              <option>sport</option>
+            </select>
           </div>
         </div>
         <!-- TODO MAKE THIS CLOSE MODAL -->

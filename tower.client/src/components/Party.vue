@@ -15,6 +15,7 @@
           <p v-else style="color: red">MAX CAPACITY</p>
           <p>Date: {{ new Date(party.startDate).toLocaleString() }}</p>
           <p>Location: {{ party.location }}</p>
+          <p>{{ party.type }}</p>
         </div>
       </div>
     </div>
@@ -27,6 +28,8 @@
           <p v-else style="color: red">MAX CAPACITY}</p>
           <p>Date: {{ new Date(party.startDate).toLocaleString() }}</p>
           <p>Location: {{ party.location }}</p>
+          <p>{{ party.type }}</p>
+
           <p>CANCELED</p>
         </div>
       </div>

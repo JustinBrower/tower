@@ -21,6 +21,11 @@ class PartiesService {
         return res.data
     }
 
+    async cancelParty(id) {
+        const res = await api.delete('api/events/' + id)
+        AppState.parties = AppState.parties.filter(p => p.id !== id)
+    }
+
     async setActive(id) {
         const res = await api.get('api/events/' + id)
         logger.log("active party is...", res.data)
