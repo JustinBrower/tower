@@ -97,7 +97,10 @@
           </div>
         </div>
         <!-- TODO MAKE THIS CLOSE MODAL -->
-        <div class="mt-2 d-flex justify-content-end align-items-center">
+        <div
+          @click="goTo('Party')"
+          class="mt-2 d-flex justify-content-end align-items-center"
+        >
           <button @click="createParty" type="button" class="btn btn-success">
             Create Event
           </button>
@@ -123,14 +126,15 @@ export default {
       goTo(page) {
         router.push({
           name: page,
-          params: { id: props.project.id },
+          params: { id: route.params.id },
         });
       },
       editable,
       async createParty() {
         try {
           logger.log("attempting to create event...")
-          await partiesService.createParty(editable.value)
+          const party = await partiesService.createParty(editable.value)
+          router.push({ name: 'Party', params: { id: party.id } })
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')

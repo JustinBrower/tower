@@ -18,6 +18,13 @@ class PartiesService {
         logger.log("res is...", res)
         logger.log("res.data is...", res.data)
         AppState.parties = [...AppState.parties, res.data]
+        return res.data
+    }
+
+    async setActive(id) {
+        const res = await api.get('api/events/' + id)
+        logger.log("active party is...", res.data)
+        AppState.activeParty = res.data
     }
 
     async search(query) {
