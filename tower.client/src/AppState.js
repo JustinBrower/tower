@@ -7,4 +7,5 @@ export const AppState = reactive({
   parties: [],
   activeParty: {},
   comments: [],
+  tickets: [],
 })

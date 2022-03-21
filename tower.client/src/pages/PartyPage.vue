@@ -39,9 +39,16 @@
           EDIT
         </button>
       </div>
-      <div v-if="thisParty.creatorId !== account.id && !thisParty.isCanceled">
+      <div
+        v-if="
+          thisParty.creatorId !== account.id &&
+          !thisParty.isCanceled &&
+          !yourTicket
+        "
+      >
         <button @click="buyTicket" class="btn btn-success">Buy Ticket</button>
       </div>
+      <div style="color: green" v-else>TICKET BOUGHT</div>
       <p>{{ thisParty.isCanceled }}</p>
     </div>
     <div class="row">
@@ -146,6 +153,7 @@ import { logger } from '../utils/Logger'
 import Pop from '../utils/Pop'
 import { useRoute } from 'vue-router'
 import { commentsService } from '../services/CommentsService'
+import { ticketsService } from '../services/TicketsService'
 export default {
   name: 'Party',
   setup() {
@@ -160,6 +168,12 @@ export default {
       }
       try {
         await commentsService.getPartyComments(route.params.id)
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+      try {
+        await ticketsService.getPartyTickets(route.params.id)
       } catch (error) {
         logger.error(error)
         Pop.toast(error.message, 'error')
@@ -194,10 +208,20 @@ export default {
           Pop.toast(error.message, 'error')
         }
       },
-
+      async buyTicket() {
+        try {
+          editable.value.eventId = this.thisParty.id
+          const ticket = await ticketsService.buyTicket(editable.value)
+          Pop.toast("Ticket Bought for " + this.thisParty.name)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
       thisParty: computed(() => AppState.activeParty),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
+      yourTicket: computed(() => AppState.tickets.filter(t => t.accountId == AppState.account.id))
     }
   }
 }

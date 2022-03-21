@@ -38,14 +38,23 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { AppState } from '../AppState'
 import { logger } from '../utils/Logger'
 import { accountService } from '../services/AccountService'
 import Pop from '../utils/Pop'
+import { ticketsService } from '../services/TicketsService'
 export default {
   name: 'Account',
   setup() {
+    onMounted(async () => {
+      try {
+        await ticketsService.getMyTickets()
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+    })
     const editable = ref({})
     return {
       editable,
