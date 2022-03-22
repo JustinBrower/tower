@@ -30,6 +30,13 @@ class PartiesService {
         const res = await api.put('api/events/' + id, body)
     }
 
+    async partyFilter(query = '') {
+        // FIXME NOT SURE WHAT IM DOING WRONG
+        logger.log('query is...', query)
+        const res = await api.get('api/events/', { type: query })
+        logger.log(res.data)
+    }
+
     async setActive(id) {
         const res = await api.get('api/events/' + id)
         logger.log("active party is...", res.data)

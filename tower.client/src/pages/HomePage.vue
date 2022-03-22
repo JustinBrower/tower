@@ -1,7 +1,44 @@
 <template>
   <div class="container-fluid">
+    <div class="row bg-secondary pt-2 pb-2 justify-content-center">
+      <div class="col-10">
+        <div class="row">
+          <div class="col-2 d-flex justify-content-around">
+            <button class="btn btn-info" @click="partyFilter('concert')">
+              All
+            </button>
+          </div>
+          <div class="col-2 d-flex justify-content-around">
+            <button class="btn btn-info" @click="partyFilter('concert')">
+              Concert
+            </button>
+          </div>
+          <div class="col-2 d-flex justify-content-around">
+            <button class="btn btn-info" @click="partyFilter('convention')">
+              Convention
+            </button>
+          </div>
+          <div class="col-2 d-flex justify-content-around">
+            <button class="btn btn-info" @click="partyFilter('digital')">
+              Digital
+            </button>
+          </div>
+          <div class="col-2 d-flex justify-content-around">
+            <button class="btn btn-info" @click="partyFilter('sport')">
+              Sport
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid bg-primary">
     <div class="row">
-      <div class="col-3" v-for="p in parties" :key="p.id">
+      <div
+        class="col-3 d-flex justify-content-around"
+        v-for="p in parties"
+        :key="p.id"
+      >
         <Party :party="p" />
       </div>
     </div>
@@ -26,6 +63,14 @@ export default {
       }
     })
     return {
+      async partyFilter(type) {
+        try {
+          await partiesService.partyFilter(type)
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
       parties: computed(() => AppState.parties)
     }
   }

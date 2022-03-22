@@ -17,7 +17,11 @@
           <p>Location: {{ party.location }}</p>
           <p>{{ party.type }}</p>
           <!-- NOTE THIS THROWS AN ERROR BUT THIS WAS AN AWESOME SOLUTION SO I DONT WANNA FIX IT -->
-          <button v-if="party.mine == true" class="btn btn-warning">
+          <button
+            v-if="party.mine == true"
+            @click="deleteTicket"
+            class="btn btn-warning"
+          >
             Refund
           </button>
         </div>
@@ -59,38 +63,24 @@ export default {
     }
   },
   setup(props) {
-    // onMounted(async () => {
-    //   try {
-    //     await ticketsService.getMyTickets()
-    //   } catch (error) {
-    //     logger.error(error)
-    //     Pop.toast(error.message, 'error')
-    //   }
-    //   try {
-    //     await partiesService.getAllParties()
-    //   } catch (error) {
-    //     logger.error(error)
-    //     Pop.toast(error.message, 'error')
-    //   }
-    // })
     return {
+      async deleteTicket() {
+        try {
+          if (await Pop.confirm()) {
+            await ticketsService.deleteTicket(props.party.id)
+            Pop.toast("Refrund Given!")
+          }
+        } catch (error) {
+          logger.error(error)
+          Pop.toast(error.message, 'error')
+        }
+      },
       goTo(page) {
         router.push({
           name: page,
           params: { id: props.party.id },
         });
       },
-      account: computed(() => AppState.account),
-      tickets: computed(() => AppState.tickets),
-      myParties: computed(() => {
-        let newParties = []
-        for (let i = 0; i < AppState.tickets.length; i++) {
-          let ticket = AppState.parties.find(p => p.id === AppState.tickets[i].id)
-          newParties.push(ticket)
-        }
-        logger.log("newParties is...", newParties)
-        return newParties
-      })
     }
   }
 }
