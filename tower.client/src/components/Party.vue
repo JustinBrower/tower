@@ -16,6 +16,10 @@
           <p>Date: {{ new Date(party.startDate).toLocaleString() }}</p>
           <p>Location: {{ party.location }}</p>
           <p>{{ party.type }}</p>
+          <!-- NOTE THIS THROWS AN ERROR BUT THIS WAS AN AWESOME SOLUTION SO I DONT WANNA FIX IT -->
+          <button v-if="party.mine == true" class="btn btn-warning">
+            Refund
+          </button>
         </div>
       </div>
     </div>
@@ -38,7 +42,15 @@
 
 
 <script>
+import { computed } from '@vue/reactivity';
+import { useRoute } from 'vue-router';
 import { router } from '../router';
+import { logger } from '../utils/Logger';
+import { AppState } from '../AppState';
+import { onMounted } from '@vue/runtime-core';
+import { ticketsService } from '../services/TicketsService';
+import { partiesService } from '../services/PartiesService';
+import Pop from '../utils/Pop';
 export default {
   props: {
     party: {
@@ -47,13 +59,38 @@ export default {
     }
   },
   setup(props) {
+    // onMounted(async () => {
+    //   try {
+    //     await ticketsService.getMyTickets()
+    //   } catch (error) {
+    //     logger.error(error)
+    //     Pop.toast(error.message, 'error')
+    //   }
+    //   try {
+    //     await partiesService.getAllParties()
+    //   } catch (error) {
+    //     logger.error(error)
+    //     Pop.toast(error.message, 'error')
+    //   }
+    // })
     return {
       goTo(page) {
         router.push({
           name: page,
           params: { id: props.party.id },
         });
-      }
+      },
+      account: computed(() => AppState.account),
+      tickets: computed(() => AppState.tickets),
+      myParties: computed(() => {
+        let newParties = []
+        for (let i = 0; i < AppState.tickets.length; i++) {
+          let ticket = AppState.parties.find(p => p.id === AppState.tickets[i].id)
+          newParties.push(ticket)
+        }
+        logger.log("newParties is...", newParties)
+        return newParties
+      })
     }
   }
 }

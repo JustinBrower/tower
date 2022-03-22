@@ -86,8 +86,9 @@ export default {
       myParties: computed(() => {
         let newParties = []
         for (let i = 0; i < AppState.tickets.length; i++) {
-          let ticket = AppState.parties.find(p => p.id === AppState.tickets[i].id)
-          newParties.push(ticket)
+          let party = AppState.parties.find(p => p.id === AppState.tickets[i].id)
+          party.mine = true
+          newParties.push(party)
         }
         logger.log("newParties is...", newParties)
         return newParties
