@@ -60,7 +60,7 @@ class PartiesService {
     async addCapacity(id) {
 
         const ticket = await dbContext.Tickets.findById(id)
-        const party = await dbContext.Parties.findById(ticket.eventId)
+        const party = await dbContext.Parties.findById(ticket.id)
         party.capacity = (party.capacity + 1)
         await party.save()
         return party

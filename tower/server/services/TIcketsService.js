@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext"
 import { BadRequest, Forbidden } from "../utils/Errors"
+import { partiesService } from "./PartiesService"
 
 
 
@@ -17,6 +18,7 @@ class TicketsService {
 
     async deleteTicket(id, userId) {
         const doomedTicket = await dbContext.Tickets.findById(id)
+        const editParty = await partiesService.addCapacity(id)
         if (doomedTicket.accountId !== userId) {
             throw new Forbidden("You cannot delete this")
         }

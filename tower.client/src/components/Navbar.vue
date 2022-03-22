@@ -66,7 +66,7 @@
 
           <div class="row">
             <label class="p-2" for="type">Type:</label>
-            <select v-model="editable.type">
+            <select required v-model="editable.type">
               <option></option>
               <option>concert</option>
               <option>convention</option>
