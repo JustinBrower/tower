@@ -50,20 +50,20 @@ class PartiesService {
         return original
     }
 
-    async minusCapacity(body, userId) {
+    async minusCapacity(body) {
         const party = await dbContext.Parties.findById(body.eventId)
         party.capacity = (party.capacity - 1)
-        const trueParty = await partiesService.editParty(party, userId)
-        return trueParty
+        await party.save()
+        return party
     }
 
-    async addCapacity(id, userId) {
+    async addCapacity(id) {
 
         const ticket = await dbContext.Tickets.findById(id)
         const party = await dbContext.Parties.findById(ticket.eventId)
         party.capacity = (party.capacity + 1)
-        const trueParty = await partiesService.editParty(party, userId)
-        return trueParty
+        await party.save()
+        return party
     }
 
     async cancelParty(id, userId) {

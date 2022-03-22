@@ -43,8 +43,8 @@
         v-if="
           thisParty.creatorId !== account.id &&
           !thisParty.isCanceled &&
-          !yourTicket &&
-          thisParty.capacity > 0
+          thisParty.capacity > 0 &&
+          yourTicket == undefined
         "
       >
         <button @click="buyTicket" class="btn btn-success">Buy Ticket</button>
@@ -231,7 +231,7 @@ export default {
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
       tickets: computed(() => AppState.tickets),
-      yourTicket: computed(() => AppState.tickets.filter(t => t.accountId == AppState.account.id)),
+      yourTicket: computed(() => AppState.tickets.find(t => t.accountId == AppState.account.id)),
       // theseTickets: computed(() => AppState.tickets.filter(t => t.id === AppState.activeParty.id))
     }
   }
