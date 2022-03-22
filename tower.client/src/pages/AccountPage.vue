@@ -84,7 +84,7 @@ export default {
       account: computed(() => AppState.account),
       tickets: computed(() => AppState.tickets),
       myParties: computed(() => {
-        let newParties = []
+        let newParties = AppState.parties.filter(p => p.creatorId == AppState.account.id)
         for (let i = 0; i < AppState.tickets.length; i++) {
           let party = AppState.parties.find(p => p.id === AppState.tickets[i].id)
           party.mine = true

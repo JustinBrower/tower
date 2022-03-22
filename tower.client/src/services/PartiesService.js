@@ -35,6 +35,7 @@ class PartiesService {
         logger.log('query is...', query)
         const res = await api.get('api/events/', { type: query })
         logger.log(res.data)
+        // AppState.parties = res.data NOTE COMMENT BACK IN WHEN FIXED
     }
 
     async setActive(id) {

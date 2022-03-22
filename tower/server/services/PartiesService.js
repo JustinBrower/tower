@@ -16,7 +16,9 @@ class PartiesService {
     }
 
     async createParty(body) {
-        // if (body.startDate < Date()) {
+        // FIXME IM SO CLOSE MAN I FEEL LIKE THIS IS IT RIGHT HERE
+        // let today = new Date()
+        // if (body.startDate < today.toLocaleDateString("en-US")) {
         //     throw new BadRequest("Bro you can't plan an event in the past")
         // }
 
@@ -46,6 +48,22 @@ class PartiesService {
 
         await original.save()
         return original
+    }
+
+    async minusCapacity(body, userId) {
+        const party = await dbContext.Parties.findById(body.eventId)
+        party.capacity = (party.capacity - 1)
+        const trueParty = await partiesService.editParty(party, userId)
+        return trueParty
+    }
+
+    async addCapacity(id, userId) {
+
+        const ticket = await dbContext.Tickets.findById(id)
+        const party = await dbContext.Parties.findById(ticket.eventId)
+        party.capacity = (party.capacity + 1)
+        const trueParty = await partiesService.editParty(party, userId)
+        return trueParty
     }
 
     async cancelParty(id, userId) {

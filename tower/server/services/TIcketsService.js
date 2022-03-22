@@ -1,6 +1,5 @@
 import { dbContext } from "../db/DbContext"
 import { BadRequest, Forbidden } from "../utils/Errors"
-import { partiesService } from "./PartiesService"
 
 
 
@@ -39,7 +38,7 @@ class TicketsService {
     }
 
     async getTicketsByParty(id) {
-        const tickets = await dbContext.Tickets.find({ eventId: id })
+        const tickets = await dbContext.Tickets.find({ eventId: id }).populate('creator')
         return tickets
     }
 }

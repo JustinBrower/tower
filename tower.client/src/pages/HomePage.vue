@@ -4,9 +4,7 @@
       <div class="col-10">
         <div class="row">
           <div class="col-2 d-flex justify-content-around">
-            <button class="btn btn-info" @click="partyFilter('concert')">
-              All
-            </button>
+            <button class="btn btn-info" @click="partyFilter('')">All</button>
           </div>
           <div class="col-2 d-flex justify-content-around">
             <button class="btn btn-info" @click="partyFilter('concert')">

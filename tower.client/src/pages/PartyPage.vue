@@ -43,13 +43,22 @@
         v-if="
           thisParty.creatorId !== account.id &&
           !thisParty.isCanceled &&
-          !yourTicket
+          !yourTicket &&
+          thisParty.capacity > 0
         "
       >
         <button @click="buyTicket" class="btn btn-success">Buy Ticket</button>
       </div>
-      <div style="color: green" v-else>TICKET BOUGHT</div>
-      <p>{{ thisParty.isCanceled }}</p>
+      <div style="color: red" v-else>
+        Unable To Purchase
+        <!-- TODO COULD ADD V-IF THAT SAYS IF YOU'RE ATTENDING -->
+        <p v-if="thisParty.isCanceled" style="color: red">CANCELED</p>
+      </div>
+    </div>
+    <div class="row">
+      <p v-for="t in tickets" :key="t.ticketId">
+        <AttendeePic :ticket="t" />
+      </p>
     </div>
     <div class="row">
       <div class="col-4 bg-light p-2">
@@ -221,7 +230,9 @@ export default {
       thisParty: computed(() => AppState.activeParty),
       comments: computed(() => AppState.comments),
       account: computed(() => AppState.account),
-      yourTicket: computed(() => AppState.tickets.filter(t => t.accountId == AppState.account.id))
+      tickets: computed(() => AppState.tickets),
+      yourTicket: computed(() => AppState.tickets.filter(t => t.accountId == AppState.account.id)),
+      // theseTickets: computed(() => AppState.tickets.filter(t => t.id === AppState.activeParty.id))
     }
   }
 }

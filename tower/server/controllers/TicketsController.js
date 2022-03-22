@@ -21,7 +21,9 @@ export class TicketsController extends BaseController {
             // TODO MAKE THIS SEND A PUT REQUEST TO PARTY TO EDIT CAPACITY
             req.body.accountId = req.userInfo.id
             const ticket = await ticketsService.createTicket(req.body)
+            const editParty = await partiesService.minusCapacity(req.body, req.userInfo.id)
             res.send(ticket)
+            res.send(editParty)
         } catch (error) {
             next(error)
         }
@@ -30,7 +32,9 @@ export class TicketsController extends BaseController {
     async deleteTicket(req, res, next) {
         try {
             const doomedTicket = await ticketsService.deleteTicket(req.params.id, req.userInfo.id)
+            const editParty = await partiesService.addCapacity(req.params.id, req.userInfo.id)
             res.send(doomedTicket)
+            res.send(editParty)
         } catch (error) {
             next(error)
         }
