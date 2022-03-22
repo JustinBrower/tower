@@ -35,6 +35,14 @@
       </div>
     </div>
   </div>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- FIXME THE KEY THROWS AN ERROR FOR SOME REASON -->
+      <div class="col-3" v-for="p in myParties" :key="p.index">
+        <Party :party="p" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -44,12 +52,19 @@ import { logger } from '../utils/Logger'
 import { accountService } from '../services/AccountService'
 import Pop from '../utils/Pop'
 import { ticketsService } from '../services/TicketsService'
+import { partiesService } from '../services/PartiesService'
 export default {
   name: 'Account',
   setup() {
     onMounted(async () => {
       try {
         await ticketsService.getMyTickets()
+      } catch (error) {
+        logger.error(error)
+        Pop.toast(error.message, 'error')
+      }
+      try {
+        await partiesService.getAllParties()
       } catch (error) {
         logger.error(error)
         Pop.toast(error.message, 'error')
@@ -66,10 +81,21 @@ export default {
           Pop.toast(error.message)
         }
       },
-      account: computed(() => AppState.account)
+      account: computed(() => AppState.account),
+      tickets: computed(() => AppState.tickets),
+      myParties: computed(() => {
+        let newParties = []
+        for (let i = 0; i < AppState.tickets.length; i++) {
+          let ticket = AppState.parties.find(p => p.id === AppState.tickets[i].id)
+          newParties.push(ticket)
+        }
+        logger.log("newParties is...", newParties)
+        return newParties
+      })
     }
   }
 }
+
 </script>
 
 <style scoped>

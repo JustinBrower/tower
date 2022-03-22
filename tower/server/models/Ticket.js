@@ -16,3 +16,10 @@ TicketSchema.virtual('creator', {
     justOne: true,
     ref: 'Profile'
 })
+
+TicketSchema.virtual('party', {
+    localField: 'eventId',
+    foreignField: '_id',
+    justOne: true,
+    ref: 'Party'
+})
