@@ -1,31 +1,25 @@
 <template>
   <div class="container-fluid bg-secondary">
     <div class="row justify-content-center">
-      <div class="col-12">
-        <h1>{{ thisParty.name }}</h1>
-        <div class="row justify-content-center">
-          <div class="col-12 justify-content-center d-flex">
-            <p>
-              {{ thisParty.description }}
-              <img
-                class="details-size img-fluid image-opaque"
-                :src="thisParty.coverImg"
-                alt="cover_image"
-              />
-            </p>
-          </div>
-        </div>
-      </div>
+      <img
+        class="img-fluid bg-pic"
+        :src="thisParty.coverImg"
+        alt="cover_image"
+      />
+      <h1 class="col-2 text-name">{{ thisParty.name }}</h1>
     </div>
     <div class="row">
       <div class="col-12">
-        <p v-if="thisParty.capacity > 0">
-          Tickets Left: {{ thisParty.capacity }}
-        </p>
-        <p v-else style="color: red">MAX CAPACITY</p>
-        <p>Date: {{ new Date(thisParty.startDate).toLocaleString() }}</p>
-        <p>Location: {{ thisParty.location }}</p>
-        <p>Type: {{ thisParty.type }}</p>
+        <h1 class="text-description">{{ thisParty.description }}</h1>
+        <h3 class="text-details">
+          <p v-if="thisParty.capacity > 0">
+            Tickets Left: {{ thisParty.capacity }}
+          </p>
+          <p v-else style="color: red">MAX CAPACITY</p>
+          <p>Date: {{ new Date(thisParty.startDate).toLocaleString() }}</p>
+          <p>Location: {{ thisParty.location }}</p>
+          <p>Type: {{ thisParty.type }}</p>
+        </h3>
       </div>
       <div v-if="thisParty.creatorId == account.id && !thisParty.isCanceled">
         <button @click="cancelParty" class="btn btn-danger me-2 p-1">
@@ -55,12 +49,12 @@
         <p v-if="thisParty.isCanceled" style="color: red">CANCELED</p>
       </div>
     </div>
-    <div class="row">
-      <p v-for="t in tickets" :key="t.ticketId">
+    <div class="row justify-content-start pt-3">
+      <div class="col-1" v-for="t in tickets" :key="t.ticketId">
         <AttendeePic :ticket="t" />
-      </p>
+      </div>
     </div>
-    <div class="row">
+    <div class="row pt-3">
       <div class="col-4 bg-light p-2">
         <form @submit.prevent="postComment">
           <label class="me-2" for="comment">Comment: </label>
@@ -194,6 +188,7 @@ export default {
         try {
           if (await Pop.confirm()) {
             await partiesService.cancelParty(this.thisParty.id)
+            Pop.toast("Event Canceled!")
           }
         } catch (error) {
           logger.error(error)
@@ -203,6 +198,7 @@ export default {
       async editParty() {
         try {
           await partiesService.editParty(editable.value, route.params.id)
+          Pop.toast("Event Edited!")
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
@@ -212,6 +208,7 @@ export default {
         try {
           editable.value.eventId = route.params.id
           await commentsService.postComment(editable.value)
+          Pop.toast("Comment Posted!")
         } catch (error) {
           logger.error(error)
           Pop.toast(error.message, 'error')
@@ -245,5 +242,49 @@ export default {
 }
 .image-opaque {
   opacity: 50%;
+}
+
+.bg-pic {
+  opacity: 50%;
+  width: 100%;
+  max-height: 125vh;
+}
+
+.text-name {
+  opacity: 70%;
+  position: absolute;
+  top: 100px;
+  left: 50px;
+  background-color: black;
+  color: white;
+  padding-left: 40px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.text-description {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 70%;
+  background-color: black;
+  color: white;
+  padding-left: 40px;
+  padding-right: 15px;
+  padding-bottom: 10px;
+}
+
+.text-details {
+  opacity: 70%;
+  position: absolute;
+  bottom: -50px;
+  left: 50px;
+  background-color: black;
+  color: white;
+  padding-top: 10px;
+  padding-left: 40px;
+  padding-right: 15px;
+  padding-bottom: 10px;
 }
 </style>

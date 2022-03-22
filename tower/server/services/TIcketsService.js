@@ -17,7 +17,7 @@ class TicketsService {
 
     async deleteTicket(id, userId) {
         const doomedTicket = await dbContext.Tickets.findById(id)
-        if (doomedTicket.creatorId != userId) {
+        if (doomedTicket.accountId !== userId) {
             throw new Forbidden("You cannot delete this")
         }
         doomedTicket.delete()

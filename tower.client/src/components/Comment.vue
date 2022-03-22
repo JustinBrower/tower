@@ -7,15 +7,21 @@
     />
     <p class="ms-2">{{ comment.creator.name }}</p>
     <p class="ms-2">{{ comment.body }}</p>
-    <i @click="deleteComment" class="mdi mdi-delete"></i>
+    <i
+      v-if="comment.creator.id == account.id"
+      @click="deleteComment"
+      class="mdi mdi-delete"
+    ></i>
   </div>
 </template>
 
 
 <script>
+import { computed } from '@vue/reactivity'
 import { commentsService } from '../services/CommentsService'
 import { logger } from '../utils/Logger'
 import Pop from '../utils/Pop'
+import { AppState } from '../AppState'
 export default {
   props: {
     comment: {
@@ -33,7 +39,8 @@ export default {
           logger.error(error)
           Pop.toast(error.message, 'error')
         }
-      }
+      },
+      account: computed(() => AppState.account)
     }
   }
 }
