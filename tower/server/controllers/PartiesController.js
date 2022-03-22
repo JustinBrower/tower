@@ -25,7 +25,7 @@ export class PartiesController extends BaseController {
 
     async getAllParties(req, res, next) {
         try {
-            const parties = await partiesService.getAllParties()
+            const parties = await partiesService.getAllParties(req.query)
             res.send(parties)
         } catch (error) {
             next(error)

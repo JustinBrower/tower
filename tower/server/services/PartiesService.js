@@ -5,8 +5,8 @@ import { BadRequest, Forbidden } from "../utils/Errors"
 
 class PartiesService {
 
-    async getAllParties() {
-        const parties = await dbContext.Parties.find().populate('creator')
+    async getAllParties(query = {}) {
+        const parties = await dbContext.Parties.find(query).populate('creator')
         return parties
     }
 
@@ -16,11 +16,11 @@ class PartiesService {
     }
 
     async createParty(body) {
-        // FIXME IM SO CLOSE MAN I FEEL LIKE THIS IS IT RIGHT HERE
-        // let today = new Date()
-        // if (body.startDate < today.toLocaleDateString("en-US")) {
-        //     throw new BadRequest("Bro you can't plan an event in the past")
-        // }
+        let today = new Date()
+        let day = new Date(body.startDate)
+        if (day < today) {
+            throw new BadRequest("Bro you can't plan an event in the past")
+        }
 
         if (body == undefined || null) {
             throw new BadRequest("What the heck are you sending me")
