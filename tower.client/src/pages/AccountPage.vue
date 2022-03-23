@@ -38,7 +38,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- FIXME THE KEY THROWS AN ERROR FOR SOME REASON -->
-      <div class="col-3" v-for="p in myParties" :key="p.index">
+      <div class="col-3" v-for="p in tickets" :key="p.ticketId">
         <Party :party="p" />
       </div>
     </div>
@@ -82,6 +82,7 @@ export default {
         }
       },
       account: computed(() => AppState.account),
+      // NOTE v-for through this instead of myParties
       tickets: computed(() => AppState.tickets),
       myParties: computed(() => {
         let newParties = AppState.parties.filter(p => p.creatorId == AppState.account.id)

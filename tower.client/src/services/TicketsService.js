@@ -26,13 +26,11 @@ class TicketsService {
         return res.data
     }
 
-    async deleteTicket(eventId) {
-        logger.log('Tickets are...', AppState.tickets)
-        logger.log('event id is...', eventId)
-        let doomedTicket = AppState.tickets.find(t => t.id === eventId)
-        logger.log('doomedTicket is...', doomedTicket)
-        const res = await api.delete('api/tickets/' + doomedTicket.ticketId)
-        AppState.tickets = AppState.tickets.filter(p => p.id !== id)
+    async deleteTicket(ticketId) {
+        // NOTE                                       vvvvvvv use the ticketId from our params here
+        const res = await api.delete('api/tickets/' + ticketId)
+        // NOTE                                     vvvvvvv fileter by ticektId !== ticketId
+        AppState.tickets = AppState.tickets.filter(p => p.ticketId !== ticketId)
     }
 }
 

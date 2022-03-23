@@ -18,11 +18,16 @@ class TicketsService {
 
     async deleteTicket(id, userId) {
         const doomedTicket = await dbContext.Tickets.findById(id)
-        const editParty = await partiesService.addCapacity(id)
-        if (doomedTicket.accountId !== userId) {
+        // NOTE                 don't forget toString
+        if (doomedTicket.accountId.toString() !== userId) {
             throw new Forbidden("You cannot delete this")
         }
+        // NOTE use the doomedTicket eventId to find an event, make the capacity go up, save
+        const editTicket = await dbContext.Parties.findById(doomedTicket.eventId)
+        editTicket.capacity++
+        editTicket.save()
         doomedTicket.delete()
+        return 'delorted'
     }
 
     async getMyTickets(id) {

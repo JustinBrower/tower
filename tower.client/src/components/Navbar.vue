@@ -77,9 +77,7 @@
         </div>
         <!-- TODO MAKE THIS CLOSE MODAL -->
         <div class="mt-2 d-flex justify-content-end align-items-center">
-          <button @click="createParty" type="button" class="btn btn-success">
-            Create Event
-          </button>
+          <button class="btn btn-success">Create Event</button>
         </div>
       </form>
     </template>

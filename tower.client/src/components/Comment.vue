@@ -10,7 +10,8 @@
     <i
       v-if="comment.creator.id == account.id"
       @click="deleteComment"
-      class="mdi mdi-delete"
+      title="Delete"
+      class="mdi mdi-delete selectable"
     ></i>
   </div>
 </template>

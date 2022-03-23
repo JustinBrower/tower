@@ -17,8 +17,9 @@
           <p>Location: {{ party.location }}</p>
           <p>{{ party.type }}</p>
           <!-- NOTE THIS THROWS AN ERROR BUT THIS WAS AN AWESOME SOLUTION SO I DONT WANNA FIX IT -->
+          <!-- NOTE v-if should be if this party has a ticketId -->
           <button
-            v-if="party.mine == true"
+            v-if="party.ticketId"
             @click="deleteTicket"
             class="btn btn-warning"
           >
@@ -67,7 +68,8 @@ export default {
       async deleteTicket() {
         try {
           if (await Pop.confirm()) {
-            await ticketsService.deleteTicket(props.party.id)
+            // NOTE pass down the ticketId here
+            await ticketsService.deleteTicket(props.party.ticketId)
             Pop.toast("Refrund Given!")
           }
         } catch (error) {

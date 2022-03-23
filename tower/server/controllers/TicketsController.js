@@ -32,9 +32,9 @@ export class TicketsController extends BaseController {
     async deleteTicket(req, res, next) {
         try {
             const doomedTicket = await ticketsService.deleteTicket(req.params.id, req.userInfo.id)
-            const editParty = await partiesService.addCapacity(req.params.id)
+            // const editParty = await partiesService.addCapacity(req.params.id)
             res.send(doomedTicket)
-            res.send(editParty)
+            // res.send(editParty)
         } catch (error) {
             next(error)
         }

@@ -1,6 +1,12 @@
 <template #title>
   <div>
-    <img class="mini-pic" :src="ticket.creator.picture" alt="" />
+    <!-- NOTE add a title attribute to the img, use v-binding to access creator.name -->
+    <img
+      :title="ticket.creator.name"
+      class="mini-pic"
+      :src="ticket?.creator.picture"
+      alt=""
+    />
   </div>
 </template>
 
